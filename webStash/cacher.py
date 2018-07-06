@@ -1,6 +1,8 @@
 import pickle as pkl
 import os
 import shutil
+import hashlib
+import codecs
 
 try:
     from config import Config
@@ -30,7 +32,7 @@ class Cacher:
         return self.__load(self.cacheMap[key])
 
     def __setitem__(self, key, value):
-        filename = self.getNextFilename()
+        filename = self.getFilename(key)
         self.cacheMap[key] = filename
         pkl.dump(self.cacheMap, open('cacheMap.pkl', 'wb'))
         self.__dump(value, filename)
@@ -54,6 +56,7 @@ class Cacher:
             raise SerializerImplementationError(genNotSupportedStr(self.config.serializer))
 
     def clean(self):
+        print('cleaning...')
         try:
             shutil.rmtree('webstashcache')
         except FileNotFoundError:
@@ -63,8 +66,11 @@ class Cacher:
         except FileNotFoundError:
             print('no cacheMap to remove; doing nothing...')
 
-    def getNextFilename(self):
-        return 'webstashcache/'+'cached_'+str(len(self.cacheMap))
+    def getFilename(self, filename):
+        m = hashlib.sha256()
+        encodedFilename = codecs.encode(filename)
+        m.update(encodedFilename)
+        return 'webstashcache/'+str(m.digest())
 
 if __name__ == "__main__":
     import os
@@ -81,6 +87,9 @@ if __name__ == "__main__":
     del cacher[link]
     assert len(cacher.cacheMap) == 0
     cacher.clean()
+
+    # testing getFilename
+    assert cacher.getFilename('somefile') == cacher.getFilename('somefile')
 
     # making sure that my exceptions are being handled properly
     cacher.config.serializer = 'notASerializer'
