@@ -14,6 +14,7 @@ class Getter:
         self.getterType = getterType
         self.can_screenshot = False
         self.workers = []
+        self.waitTimeBeforeScraping = waitTimeBeforeScraping
 
         if getterType == 'chromedriver':
             options = webdriver.ChromeOptions()
@@ -27,7 +28,7 @@ class Getter:
             return str(urlopen(url).read())
         if self.getterType == 'chromedriver':
             self.driver.get(url)
-            time.sleep(waitTimeBeforeScraping)
+            time.sleep(self.waitTimeBeforeScraping)
             return self.driver.page_source
 
         else:
