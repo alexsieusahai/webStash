@@ -25,7 +25,7 @@ class Getter:
 
     def get_html(self, url):
         if self.getterType == 'urlopen':
-            return str(urlopen(url).read())
+            return urlopen(url).read()
         if self.getterType == 'chromedriver':
             self.driver.get(url)
             time.sleep(self.waitTimeBeforeScraping)
