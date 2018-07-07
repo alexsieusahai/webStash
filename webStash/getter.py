@@ -1,13 +1,15 @@
 from urllib.request import urlopen
 from selenium import webdriver
 
+import time
+
 try:
     from exceptions import GetterImplementationError
 except (SystemError, ImportError):
     from .exceptions import GetterImplementationError
 
 class Getter:
-    def __init__(self, getterType):
+    def __init__(self, getterType, waitTimeBeforeScraping=0):
         assert isinstance(getterType, str)
         self.getterType = getterType
         self.can_screenshot = False
@@ -25,6 +27,7 @@ class Getter:
             return str(urlopen(url).read())
         if self.getterType == 'chromedriver':
             self.driver.get(url)
+            time.sleep(waitTimeBeforeScraping)
             return self.driver.page_source
 
         else:
@@ -37,7 +40,6 @@ class Getter:
                 return filename
         else:
             return None
-
 
 
 if __name__ == "__main__":

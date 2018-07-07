@@ -16,11 +16,11 @@ except (SystemError, ImportError):
     from .exceptions import GetterImplementationError
 
 class WebStash:
-    def __init__(self, getterType='urlopen'):
+    def __init__(self, getterType='urlopen', waitTimeBeforeScraping=0):
         self.cacher = Cacher()
         self.config = Config()
         self.config.setGetterType(getterType)
-        self.getter = Getter(self.config.getterType)
+        self.getter = Getter(self.config.getterType, waitTimeBeforeScraping=waitTimeBeforeScraping)
 
     def get_web_data(self, url):
         print(url)

@@ -70,7 +70,7 @@ class Cacher:
         m = hashlib.md5()
         encodedFilename = codecs.encode(filename)
         m.update(encodedFilename)
-        return m.hexdigest()
+        return 'webstashcache/'+m.hexdigest()
 
 
 if __name__ == "__main__":
