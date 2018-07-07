@@ -28,11 +28,11 @@ class WebStash:
             return self.cacher[url]
         except KeyError:
             print('Getting webData...')
-            nextFilename = self.cacher.getNextFilename()
+            filename= self.cacher.getFilename(url)
             html = self.getter.get_html(url)
-            screenshotLocation = self.getter.get_screenshot(url, nextFilename+'.png')
+            screenshotLocation = self.getter.get_screenshot(url, filename+'.png')
             webData = WebData(
-                    nextFilename,
+                    filename,
                     url,
                     html,
                     screenshotLocation=screenshotLocation
@@ -40,11 +40,15 @@ class WebStash:
             self.cacher[url] = webData
             return self.cacher[url]
 
+    def delete(url):
+        del self.cacher[url]
+
     def clean(self):
         self.cacher.clean()
 
 if __name__ == "__main__":
 
+    # general stuff
     stash = WebStash(getterType='chromedriver')
     url = 'https://news.ycombinator.com/news'
     stash.get_web_data(url)

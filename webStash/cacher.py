@@ -72,6 +72,7 @@ class Cacher:
         m.update(encodedFilename)
         return 'webstashcache/'+str(m.digest())
 
+
 if __name__ == "__main__":
     import os
     from urllib.request import urlopen
