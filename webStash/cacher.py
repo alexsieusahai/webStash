@@ -67,10 +67,10 @@ class Cacher:
             print('no cacheMap to remove; doing nothing...')
 
     def getFilename(self, filename):
-        m = hashlib.sha256()
+        m = hashlib.md5()
         encodedFilename = codecs.encode(filename)
         m.update(encodedFilename)
-        return 'webstashcache/'+str(m.digest())
+        return m.hexdigest()
 
 
 if __name__ == "__main__":
