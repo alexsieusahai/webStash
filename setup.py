@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='webStash',
-    version='0.0.4',
+    version='0.0.5',
     description='Stashing the html for later',
     long_description='See docs on the github repo',
     author='Alex Sieusahai',

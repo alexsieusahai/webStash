@@ -40,6 +40,7 @@ class Cacher:
     def __delitem__(self, key):
         filename = self.cacheMap[key]
         del self.cacheMap[key]
+        pkl.dump(self.cacheMap, open('cacheMap.pkl', 'wb'))
         os.remove(os.getcwd()+'/'+filename)
 
     def __load(self, filename):

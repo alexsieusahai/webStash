@@ -25,7 +25,10 @@ class Getter:
 
     def get_html(self, url):
         if self.getterType == 'urlopen':
-            return urlopen(url).read()
+            req = urlopen(url)
+            time.sleep(self.waitTimeBeforeScraping)
+            return req.read()
+
         if self.getterType == 'chromedriver':
             self.driver.get(url)
             time.sleep(self.waitTimeBeforeScraping)
@@ -47,11 +50,23 @@ if __name__ == "__main__":
 
     getter0 = Getter('urlopen')
     html0 = getter0.get_html('https://news.ycombinator.com/news')
-    assert isinstance(html0, str)
+    assert isinstance(html0, bytes)
 
     getter1 = Getter('chromedriver')
     html1 = getter1.get_html('https://news.ycombinator.com/news')
     assert isinstance(html1, str)
+
+    import datetime
+    waitTimeBeforeScraping = 1
+    testSleep = Getter('urlopen', waitTimeBeforeScraping=waitTimeBeforeScraping)
+    startTime = datetime.datetime.now()
+    for i in range(3):
+        testSleep.get_html('https://news.ycombinator.com/news')
+
+    endTime = datetime.datetime.now()
+
+    assert (endTime - startTime).seconds > 3
+
 
     try:
         errorgetter = Getter('this is not a getter type')
