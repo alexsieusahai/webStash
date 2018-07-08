@@ -23,11 +23,10 @@ class WebStash:
         self.getter = Getter(self.config.getterType, waitTimeBeforeScraping=waitTimeBeforeScraping)
 
     def get_web_data(self, url):
-        print(url)
         try:
             return self.cacher[url]
         except KeyError:
-            print('Getting webData...')
+            self.config.debugPrint('Getting webData...')
             filename= self.cacher.getFilename(url)
             html = self.getter.get_html(url)
             screenshotLocation = self.getter.get_screenshot(url, filename+'.png')

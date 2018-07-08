@@ -25,7 +25,7 @@ class Cacher:
             self.cacheMap = {}
 
         if not os.path.isdir(os.getcwd()+'/webstashcache'):
-            print('making cache dir...')
+            self.config.debugPrint('making cache dir...')
             os.mkdir('webstashcache')
 
     def __getitem__(self, key):
@@ -34,8 +34,8 @@ class Cacher:
     def __setitem__(self, key, value):
         filename = self.getFilename(key)
         self.cacheMap[key] = filename
-        pkl.dump(self.cacheMap, open('cacheMap.pkl', 'wb'))
         self.__dump(value, filename)
+        pkl.dump(self.cacheMap, open('cacheMap.pkl', 'wb'))
 
     def __delitem__(self, key):
         filename = self.cacheMap[key]
@@ -51,21 +51,21 @@ class Cacher:
 
     def __dump(self, obj, filename):
         if self.config.serializer == 'pickle':
-            print('dumping', filename)
+            self.config.debugPrint('dumping', filename)
             pkl.dump(obj, open(filename, 'wb'))
         else:
             raise SerializerImplementationError(genNotSupportedStr(self.config.serializer))
 
     def clean(self):
-        print('cleaning...')
+        self.config.debugPrint('cleaning...')
         try:
             shutil.rmtree('webstashcache')
         except FileNotFoundError:
-            print('no webstashcache to remove; doing nothing...')
+            self.config.debugPrint('no webstashcache to remove; doing nothing...')
         try:
             os.remove('cacheMap.pkl')
         except FileNotFoundError:
-            print('no cacheMap to remove; doing nothing...')
+            self.config.debugPrint('no cacheMap to remove; doing nothing...')
 
     def getFilename(self, filename):
         m = hashlib.md5()

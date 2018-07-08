@@ -2,6 +2,7 @@ from urllib.request import urlopen
 from selenium import webdriver
 
 import time
+import requests
 
 try:
     from exceptions import GetterImplementationError
@@ -34,6 +35,11 @@ class Getter:
             time.sleep(self.waitTimeBeforeScraping)
             return self.driver.page_source
 
+        if self.getterType == 'requests':
+            r = requests.get(url)
+            time.sleep(self.waitTimeBeforeScraping)
+            return r.content
+
         else:
             raise GetterImplementationError(getterType + ' is not a supported getter type')
 
@@ -48,13 +54,18 @@ class Getter:
 
 if __name__ == "__main__":
 
+    testurl = 'https://news.ycombinator.com/news'
     getter0 = Getter('urlopen')
-    html0 = getter0.get_html('https://news.ycombinator.com/news')
+    html0 = getter0.get_html(testurl)
     assert isinstance(html0, bytes)
 
     getter1 = Getter('chromedriver')
-    html1 = getter1.get_html('https://news.ycombinator.com/news')
+    html1 = getter1.get_html(testurl)
     assert isinstance(html1, str)
+
+    getter2 = Getter('requests')
+    html2 = getter2.get_html(testurl)
+    assert isinstance(html2, bytes)
 
     import datetime
     waitTimeBeforeScraping = 1
@@ -65,7 +76,7 @@ if __name__ == "__main__":
 
     endTime = datetime.datetime.now()
 
-    assert (endTime - startTime).seconds > 3
+    assert (endTime - startTime).seconds > 3 * waitTimeBeforeScraping
 
 
     try:
