@@ -6,8 +6,10 @@ import requests
 
 try:
     from exceptions import GetterImplementationError
+    from config import Config
 except (SystemError, ImportError):
     from .exceptions import GetterImplementationError
+    from .config import Config
 
 class Getter:
     def __init__(self, getterType, waitTimeBeforeScraping=0):
@@ -15,7 +17,8 @@ class Getter:
         self.getterType = getterType
         self.can_screenshot = False
         self.workers = []
-        self.waitTimeBeforeScraping = waitTimeBeforeScraping
+        cfg = Config()
+        self.waitTimeBeforeScraping = cfg.waitTimeBeforeScraping
 
         if getterType == 'chromedriver':
             options = webdriver.ChromeOptions()

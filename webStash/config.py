@@ -14,6 +14,7 @@ class Config:
         self.getterType = None
         self.proxyList = []
         self.__debug = False
+        self.waitTimeBeforeScraping = 2
 
     def setDebugMode(self, val):
         assert isinstance(val, bool)

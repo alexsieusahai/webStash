@@ -90,9 +90,6 @@ if __name__ == "__main__":
     assert len(cacher.cacheMap) == 0
     cacher.clean()
 
-    # testing getFilename
-    assert cacher.getFilename('somefile') == cacher.getFilename('somefile')
-
     # making sure that my exceptions are being handled properly
     cacher.config.serializer = 'notASerializer'
     try:
