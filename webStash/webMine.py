@@ -21,11 +21,11 @@ class WebMine:
         self.visitedTimeDict = {}
         self.rateLimit = 1
 
-    def get_batch_html(self, url_list):
+    def get_batch_web_data(self, url_list):
         results = []
         i = 0
         while len(url_list) > 0:
-            webStash = WebStash(waitTimeBeforeScraping = self.waitTimeBeforeScraping)
+            webStash = WebStash(getterType='chromedriver', waitTimeBeforeScraping = self.waitTimeBeforeScraping)
             url = url_list[i]
             netloc = urlparse(url).netloc
             # I don't want to be forced to spin up a new WebStash every time...
@@ -44,26 +44,26 @@ class WebMine:
             if len(url_list) == 0:
                 break
             i = (i + 1) % len(url_list)
-            # maybe move the above into the get_function, and replace get_batch_html with get_all?
+            # maybe move the above into the get_function, and replace get_batch_web_data with get_all?
 
-        outputs = [p.get() for p in results]  # handles zombie threads and et cetera
+        outputs = [p.get() for p in results]  # handles zombie processes and et cetera
         return outputs
 
 
 if __name__ == '__main__':
-    webMine = webMine(2)
+    webMine = WebMine(2, waitTimeBeforeScraping=2)
 
     WebStash().clean()
 
     startTime = time.time()
     url_list = ['https://news.ycombinator.com/news', 'https://news.ycombinator.com/']
-    webTrove.get_batch_html(url_list)
+    webMine.get_batch_web_data(url_list)
     endTime = time.time()
-    assert endTime - startTime > webTrove.rateLimit
+    assert endTime - startTime > webMine.rateLimit
 
     # now that those links are hashed...
 
     startTime = time.time()
-    webTrove.get_batch_html(url_list)
+    webMine.get_batch_web_data(url_list)
     endTime = time.time()
     assert endTime - startTime < 0.01

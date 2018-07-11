@@ -20,10 +20,6 @@ class Getter:
         cfg = Config()
         self.waitTimeBeforeScraping = cfg.waitTimeBeforeScraping
 
-        if getterType == 'chromedriver':
-            options = webdriver.ChromeOptions()
-            options.add_argument('headless')
-            self.driver = webdriver.Chrome(chrome_options=options)
         if getterType in ['chromedriver']:
             self.can_screenshot = True
 
@@ -34,6 +30,9 @@ class Getter:
             return req.read()
 
         if self.getterType == 'chromedriver':
+            options = webdriver.ChromeOptions()
+            options.add_argument('headless')
+            self.driver = webdriver.Chrome(chrome_options=options)
             self.driver.get(url)
             time.sleep(self.waitTimeBeforeScraping)
             return self.driver.page_source
@@ -47,6 +46,7 @@ class Getter:
             raise GetterImplementationError(getterType + ' is not a supported getter type')
 
     def get_screenshot(self, url, filename):
+        return None
         if self.can_screenshot:
             if self.getterType == 'chromedriver':
                 self.driver.save_screenshot(filename)

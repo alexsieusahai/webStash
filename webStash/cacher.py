@@ -19,10 +19,15 @@ genNotSupportedStr = lambda astr: astr + ' is not currently supported!'
 class Cacher:
     def __init__(self):
         self.config = Config()
-        try:
-            self.cacheMap = pkl.load(open('cacheMap.pkl', 'rb'))
-        except FileNotFoundError:
-            self.cacheMap = {}
+        while True:
+            try:
+                self.cacheMap = pkl.load(open('cacheMap.pkl', 'rb'))
+                break
+            except FileNotFoundError:
+                self.cacheMap = {}
+                break
+            except EOFError:  # bad hack, should use a lock object on cacheMap instead
+                time.sleep(0.05)
 
         if not os.path.isdir(os.getcwd()+'/webstashcache'):
             self.config.debugPrint('making cache dir...')
