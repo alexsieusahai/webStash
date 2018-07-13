@@ -44,11 +44,3 @@ class WebStash:
     def clean(self):
         self.cacher.clean()
 
-if __name__ == "__main__":
-
-    # general stuff
-    stash = WebStash(getterType='chromedriver')
-    url = 'https://news.ycombinator.com/news'
-    stash.get_web_data(url)
-    assert url in stash.cacher.cacheMap
-    stash.clean()

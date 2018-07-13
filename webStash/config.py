@@ -44,15 +44,3 @@ class Config:
             print(' '.join([str(x) for x in kwargs]))
 
 
-if __name__ == '__main__':
-    cfg = Config()
-    cfg.getFreeProxies()
-    assert isinstance(cfg.proxyList, list)
-    aproxy = cfg.proxyList[0]
-    assert isinstance(aproxy, ProxyData)
-
-    # testing debugPrint
-    cfg.debugPrint(1, 'a')
-    cfg.setDebugMode(True)
-    cfg.debugPrint(1, 'a')
-

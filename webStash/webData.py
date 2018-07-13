@@ -12,7 +12,7 @@ class WebData:
     def to_df(self):
         df = pd.DataFrame(columns=['TimeScraped', 'Filename', 'Html', 'Link'])
         df.loc[0, 'TimeScraped'] = self.timeScraped
-        df.loc[0, 'Filename'] - self.filename
+        df.loc[0, 'Filename'] = self.filename
         df.loc[0, 'Html'] = self.html
         df.loc[0, 'Link'] = self.link
         return df

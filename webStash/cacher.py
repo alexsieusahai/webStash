@@ -78,30 +78,3 @@ class Cacher:
         m.update(encodedFilename)
         return 'webstashcache/'+m.hexdigest()
 
-
-if __name__ == "__main__":
-    import os
-    from urllib.request import urlopen
-
-    # core functionality testing
-    cacher = Cacher()
-    link = 'https://news.ycombinator.com/news'
-    html = urlopen(link).read()
-    cacher[link] = html
-    assert len(cacher.cacheMap) == 1
-    test = cacher[link]
-    assert test == html
-    del cacher[link]
-    assert len(cacher.cacheMap) == 0
-    cacher.clean()
-
-    # making sure that my exceptions are being handled properly
-    cacher.config.serializer = 'notASerializer'
-    try:
-        cacher._Cacher__load('something')
-    except Exception as e:
-        print(type(e))
-    try:
-        cacher._Cacher__dump(1, 'something')
-    except Exception as e:
-        print(type(e))

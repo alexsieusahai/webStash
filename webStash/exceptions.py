@@ -15,13 +15,3 @@ class SerializerImplementationError(ImplementationError):
 class GetterImplementationError(ImplementationError):
     def __init__(self, message):
         super()
-
-if __name__ == "__main__":
-    try:
-        raise SerializerImplementationError('test')
-    except Exception as e:
-        print(e)
-        try:
-            raise CacheMapError('cache map test')
-        except Exception as e:
-            a = 1
