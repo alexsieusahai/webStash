@@ -1,5 +1,7 @@
 # webStash
 
+[![Waffle.io - Issues in progress](https://badge.waffle.io/alexsieusahai/webStash.png?label=in%20progress&title=In%20Progress)](http://waffle.io/alexsieusahai/webStash)
+
 # Use Case
 This package is intended as a tool to help the scraping process by caching the html and other stuff such as screenshots, if available.
 
